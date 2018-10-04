@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Doctrine\ORM\PersistentCollection;
+use App\Entity\CustomerPackageDateRange;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
  */
@@ -54,11 +56,24 @@ class Customer
     /**
      * @ORM\Column(type="boolean")
      */
-    private $aktywny = true;
+    private $isActive = true;
+
+    /**
+     * @var CustomerPackageDateRange $customerPackageDateRange
+     *
+     * @ORM\OneToMany(targetEntity="CustomerPackageDateRange", mappedBy="customer")
+     */
+    private $customerPackageDateRanges;
+
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     public function getFirstname(): ?string
@@ -114,7 +129,7 @@ class Customer
         return $this->address;
     }
 
-    public function setAddress(string $address): self
+    public function setAddress($address): self
     {
         $this->address = $address;
 
@@ -145,16 +160,29 @@ class Customer
         return $this;
     }
 
-    public function getAktywny(): ?bool
+    public function getisActive(): ?bool
     {
-        return $this->aktywny;
+        return $this->isActive;
     }
 
-    public function setAktywny(bool $aktywny): self
+    public function setIsActive($isActive): self
     {
-        $this->aktywny = $aktywny;
+        $this->isActive = $isActive;
 
         return $this;
+    }
+
+    /**
+     * @return \App\Entity\CustomerPackageDateRange
+     */
+    public function getCustomerPackageDateRanges()
+    {
+        return $this->customerPackageDateRanges;
+    }
+
+    public function setCustomerPackageDateRanges(\App\Entity\CustomerPackageDateRange $customerPackageDateRanges): PersistentCollection
+    {
+        $this->customerPackageDateRanges = $customerPackageDateRanges;
     }
 
 }

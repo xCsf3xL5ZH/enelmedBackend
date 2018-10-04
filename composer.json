@@ -6,18 +6,23 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/annotations": "^1.6",
+        "doctrine/doctrine-bundle": "^1.9",
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/console": "*",
         "symfony/flex": "^1.1",
         "symfony/framework-bundle": "*",
         "symfony/orm-pack": "^1.0",
+        "symfony/property-access": "*",
+        "symfony/property-info": "*",
+        "symfony/serializer": "*",
         "symfony/validator": "*",
         "symfony/yaml": "*"
     },
     "require-dev": {
         "symfony/dotenv": "*",
-        "symfony/maker-bundle": "^1.7"
+        "symfony/maker-bundle": "^1.7",
+        "symfony/web-server-bundle": "*"
     },
     "config": {
         "preferred-install": {

@@ -5,10 +5,11 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 
+
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MedicalPackageRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DateRangeRepository")
  */
-class MedicalPackage
+class DateRange
 {
     /**
      * @ORM\Id()
@@ -18,55 +19,48 @@ class MedicalPackage
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="datetime")
      */
-    private $name;
+    private $dateStart;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="datetime")
      */
-    private $isActive;
+    private $dateEnd;
 
     /**
      * @var CustomerPackageDateRange $customerPackageDateRange
      *
-     * @ORM\OneToMany(targetEntity="CustomerPackageDateRange", mappedBy="medicalPackage")
+     * @ORM\OneToMany(targetEntity="CustomerPackageDateRange", mappedBy="dateRange")
      */
     private $customerPackageDateRanges;
 
-    /**
-     * Customer constructor.
-     */
-    public function __construct()
-    {
-        $this->customerPackageDateRanges = new PersistentCollection();
-    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getDateStart(): ?\DateTimeInterface
     {
-        return $this->name;
+        return $this->dateStart;
     }
 
-    public function setName(string $name): self
+    public function setDateStart(\DateTimeInterface $dateStart): self
     {
-        $this->name = $name;
+        $this->dateStart = $dateStart;
 
         return $this;
     }
 
-    public function getIsActive(): ?bool
+    public function getDateEnd(): ?\DateTimeInterface
     {
-        return $this->isActive;
+        return $this->dateEnd;
     }
 
-    public function setIsActive(bool $isActive): self
+    public function setDateEnd(\DateTimeInterface $dateEnd): self
     {
-        $this->isActive = $isActive;
+        $this->dateEnd = $dateEnd;
 
         return $this;
     }
@@ -86,6 +80,5 @@ class MedicalPackage
     {
         $this->customerPackageDateRanges = $customerPackageDateRanges;
     }
-
 
 }

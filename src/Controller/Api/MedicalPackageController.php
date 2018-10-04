@@ -5,11 +5,32 @@ namespace App\Controller\Api;
 use App\Entity\MedicalPackage;
 use App\Repository\MedicalPackageRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use App\Service\JsonRequestToArrayConventer;
+use App\Service\ObjectSerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class MedicalPackageController extends AbstractController
 {
+
+    /**
+     * @var ObjectSerializer $objectSerializer
+     */
+    private $objectSerializer;
+
+    const _MEDICAL_PACKAGE_MAPPING_ = array('id', 'name', 'isActive');
+
+    /**
+     * MedicalPackageController constructor.
+     * @param ObjectSerializer $objectSerializer
+     */
+    public function __construct(ObjectSerializer $objectSerializer)
+    {
+        $this->objectSerializer = $objectSerializer;
+    }
+
+
     /**
      * Returns an array of MedicalPackage objects
      *
@@ -19,7 +40,7 @@ class MedicalPackageController extends AbstractController
     {
         /** @var MedicalPackageRepository $repository */
         $repository = $this->getDoctrine()->getManager()->getRepository(MedicalPackage::class);
-        $medical_packages = $repository->pobierzWszystkieAktywne();
+        $medical_packages = $repository->getAllActive();
 
         $data = [];
 
@@ -46,20 +67,9 @@ class MedicalPackageController extends AbstractController
      */
     public function getOne(MedicalPackage $medicalPackage)
     {
-        $data = $this->transform($medicalPackage);
+        $data =  $this->objectSerializer->serialize($medicalPackage, self::_MEDICAL_PACKAGE_MAPPING_);
 
         return $this->json($data);
     }
 
-    protected function transform($medical_package) : array
-    {
-        /**
-         * @var MedicalPackage $medical_package
-         */
-        return [
-            'id' => $medical_package->getId(),
-            'name' => $medical_package->getName(),
-            'is_active' => $medical_package->getIsActive() ? true : false,
-        ];
-    }
 }

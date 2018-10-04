@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\MedicalPackage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method MedicalPackage|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,13 +15,16 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class MedicalPackageRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    private $em;
+
+    public function __construct(RegistryInterface $registry, EntityManagerInterface $entityManager)
     {
+        $this->em = $entityManager;
         parent::__construct($registry, MedicalPackage::class);
     }
 
 
-    public function pobierzWszystkieAktywne()
+    public function getAllActive()
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.isActive = :isActive')
@@ -28,6 +32,13 @@ class MedicalPackageRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function refreshEntity(MedicalPackage $dateRange)
+    {
+        $this->em->refresh($dateRange);
+
+        return $dateRange;
     }
 
 //    /**

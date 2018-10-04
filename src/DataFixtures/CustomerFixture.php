@@ -21,7 +21,7 @@ class CustomerFixture extends Fixture
             $customer->setAddress($address);
             $customer->setPostalCode($postalCode);
             $customer->setCity($city);
-            $customer->setAktywny($isActive);
+            $customer->setIsActive($isActive);
 
             $manager->persist($customer);
         }
